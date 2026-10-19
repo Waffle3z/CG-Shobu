@@ -1,0 +1,19 @@
+gameloop
+read round:int myColor:int
+loop 8 read row:word(8)
+read lastMove:string(32)
+read moveCount:int
+loop moveCount read move:string(32)
+write 3 7 4 3 0 -1
+
+INPUT
+round: 0 or 1 (in round 1 each player starts with the color the other player started with in round 0)
+myColor: the color you play this turn: 0 = black (home boards at the bottom, y >= 4), 1 = white (home boards at the top); it changes after a swap
+row: one row of the 8x8 grid, top to bottom: . empty, b black stone, w white stone
+lastMove: your opponent's last move as "px py ax ay dx dy", SWAP if your opponent just swapped, or - at the start of a round
+moveCount: number of legal moves
+move: a legal move "px py ax ay dx dy"; on white's first turn of a round the last one is SWAP (pie rule)
+
+OUTPUT
+Print one of the legal moves listed in the input (for example the first one). The default below is only legal as black's first move.
+px py ax ay dx dy: move your stone at (px,py) on one of your home boards by (dx,dy), then your stone at (ax,ay) on a board of the other color by the same (dx,dy); or SWAP on white's first turn of a round; optionally followed by a message (40 characters shown)
