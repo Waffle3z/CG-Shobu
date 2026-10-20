@@ -11,7 +11,7 @@ light. Black's home = bottom two boards, stones start on y = 3 and y = 7; white'
 stones on y = 0 and y = 4. Black moves first. A move = passive (own stone on a home board, 1-2
 steps in one of 8 directions, path empty) + aggressive (same displacement, a board of the other
 color, may push exactly one enemy stone one square past the landing square; off the board =
-removed). Emptying an enemy board wins; no legal move loses.
+removed). Emptying an enemy board wins; no legal action loses.
 
 ## Match format
 
@@ -28,8 +28,8 @@ removed). Emptying an enemy board wins; no legal move loses.
 ## Protocol (`config/stub.txt`)
 
 Per turn: `round myColor`, 8 board rows (`.`/`b`/`w`), the opponent's last move (or `SWAP`, or `-` at
-the start of a round), the number of legal moves and each legal move as `px py ax ay dx dy` (plus
-`SWAP` when the pie rule is available). Output one listed move, optionally followed by a message
+the start of a round), the number of legal actions and each legal action as `px py ax ay dx dy` (plus
+`SWAP` when the pie rule is available). Output one listed action, optionally followed by a message
 (40 characters shown). 1000 ms for a program's first turn of the match, then 100 ms.
 
 ## Build and run (from this archive)

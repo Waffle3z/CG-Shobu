@@ -8,7 +8,7 @@
 			move at home, then the same move somewhere else, where it can shove an enemy stone off the
 			edge. <strong>Push all four of your opponent's stones off any one board to win.</strong></p>
 		<p><em>Shobu was designed by Manopoly Lepeska and Jamie Sajdak (Smirk &amp; Laughter, 2019). This
-			adaptation adds a two-round match, a pie rule and a move limit.</em></p>
+			adaptation adds a two-round match, a pie rule and a turn limit.</em></p>
 		<p><span class="statement-lineno">Source code</span> of the referee and viewer:
 			<a href="https://github.com/Waffle3z/CG-Shobu" target="_blank">github.com/Waffle3z/CG-Shobu</a></p>
 	</div>
@@ -66,32 +66,32 @@
 				</ul>
 			</li>
 		</ol>
-		<p>Both moves are made in one turn and given as one output. Only turns whose aggressive move is
-			legal are legal; the list of legal turns is in your input.</p>
+		<p>Both moves are made in one turn and given as one <strong>action</strong>. An action is legal only
+			when both of its moves are legal; the list of legal actions is in your input.</p>
 
 		<h3>End of a round</h3>
 		<ul>
 			<li>You win the round as soon as one board has <strong>no stones of your opponent</strong>.</li>
-			<li>A player with no legal turn loses the round.</li>
-			<li>A round ends after <const>110</const> moves in total (a <action>SWAP</action> is not a move). If the
-				<const>110</const>th move empties an enemy board, its player wins; otherwise the round is a draw.</li>
+			<li>A player with no legal action loses the round.</li>
+			<li>A round ends after <const>110</const> turns in total (a turn spent on <action>SWAP</action> does not count). If the
+				<const>110</const>th turn empties an enemy board, its player wins; otherwise the round is a draw.</li>
 		</ul>
 
 		<h3>Pie rule</h3>
-		<p>Moving first can be an advantage, and some first moves are much stronger than others. So in every
-			round, on white's <strong>first</strong> turn, white may answer <action>SWAP</action> instead of a move:
+		<p>Moving first can be an advantage, and some first actions are much stronger than others. So in every
+			round, on white's <strong>first</strong> turn, white may answer <action>SWAP</action> instead of playing two moves:
 			the players exchange colors for the rest of the round.</p>
 		<ul>
-			<li>The player who swapped now plays <strong>black</strong>, with black's first move already on the
+			<li>The player who swapped now plays <strong>black</strong>, with black's first action already on the
 				board.</li>
-			<li>The other player now plays <strong>white</strong> and moves next.</li>
-			<li>So black's best first move is a balanced one: a first move that is too strong just gets
+			<li>The other player now plays <strong>white</strong> and plays next.</li>
+			<li>So black's best first action is a balanced one: a first action that is too strong just gets
 				taken by the opponent.</li>
 		</ul>
 		<p><action>SWAP</action> is offered only on that one turn, once per round: when it is available it is the
-			last line of your list of legal turns. The player who becomes white after a swap cannot swap back.
-			Anywhere else <action>SWAP</action> is an invalid action. A swap is not a move: it does not count
-			towards the <const>110</const>-move limit.</p>
+			last line of your list of legal actions. The player who becomes white after a swap cannot swap back.
+			Anywhere else <action>SWAP</action> is an invalid action. A turn spent on a swap does not count
+			towards the <const>110</const>-turn limit.</p>
 
 		<h3>Match</h3>
 		<p>A match is <strong>two rounds</strong>: you start as black (moving first) in one round and as white in
@@ -109,7 +109,7 @@
 				<div class="text">
 					<ul style="padding-top:0; padding-bottom:0;">
 						<li>You win a <strong>round</strong> when one of the boards has no stones of your opponent
-							left, or when your opponent has no legal move.</li>
+							left, or when your opponent has no legal action.</li>
 						<li>You win the <strong>match</strong> with more points than your opponent after the two
 							rounds (<const>2</const> per round won, <const>1</const> per draw).</li>
 					</ul>
@@ -125,9 +125,9 @@
 					<ul style="padding-top:0; padding-bottom:0;">
 						<li>You lose a round when your opponent wins it.</li>
 						<li>You lose the whole match if your program does not respond in time, or outputs anything
-							that is not one of the listed legal turns.</li>
+							that is not one of the listed legal actions.</li>
 					</ul>
-					A round reaching the <const>110</const>-move limit is a draw, and so is a match with equal points.
+					A round reaching the <const>110</const>-turn limit is a draw, and so is a match with equal points.
 				</div>
 			</div>
 		</div>
@@ -139,7 +139,7 @@
 			<span>Example</span>
 		</h1>
 		<ul>
-			<li><strong>Opening move.</strong> Black plays <action>3 7 4 3 0 -2</action>. Passive: the stone on
+			<li><strong>First turn.</strong> Black plays <action>3 7 4 3 0 -2</action>. Passive: the stone on
 				(3,7), on black's dark home board, moves two squares up to (3,5) over empty squares.
 				Aggressive: the stone on (4,3), on white's light board (light, so the other color), moves
 				two squares up to (4,1). Nothing is pushed: white's stone on (4,0) is beyond the landing
@@ -164,24 +164,24 @@
 		<div class="blk">
 			<div class="title">Input for one game turn</div>
 			<div class="text">
-				<span class="statement-lineno">Line 1:</span> <var>round</var> (<const>0</const> or <const>1</const>)
+				<span class="statement-lineno">Line 1:</span> <var>round</var> (<const>1</const> or <const>2</const>)
 				and <var>myColor</var>, the color you play this turn (<const>0</const> black: home boards at the
 				bottom; <const>1</const> white). It can change during a round, after a swap.<br>
 				<span class="statement-lineno">Next <const>8</const> lines:</span> the rows of the grid, top to
 				bottom, <const>8</const> characters each: <const>.</const> empty, <const>b</const> black stone,
 				<const>w</const> white stone.<br>
-				<span class="statement-lineno">Next line:</span> your opponent's last turn as <var>px</var>
+				<span class="statement-lineno">Next line:</span> your opponent's last action as <var>px</var>
 				<var>py</var> <var>ax</var> <var>ay</var> <var>dx</var> <var>dy</var>, <const>SWAP</const> if your
 				opponent just swapped, or <const>-</const> at the start of a round.<br>
-				<span class="statement-lineno">Next line:</span> <var>moveCount</var>, the number of legal turns.<br>
-				<span class="statement-lineno">Next <var>moveCount</var> lines:</span> a legal turn <var>px</var>
+				<span class="statement-lineno">Next line:</span> <var>actionCount</var>, the number of legal actions.<br>
+				<span class="statement-lineno">Next <var>actionCount</var> lines:</span> a legal action <var>px</var>
 				<var>py</var> <var>ax</var> <var>ay</var> <var>dx</var> <var>dy</var>. On white's first turn of a
 				round the last of these lines is <const>SWAP</const>.
 			</div>
 		</div>
 		<!-- Protocol block -->
 		<div class="blk">
-			<div class="title">Output</div>
+			<div class="title">Output for one game turn</div>
 			<div class="text">
 				<span class="statement-lineno">A single line:</span> <var>px</var> <var>py</var> <var>ax</var>
 				<var>ay</var> <var>dx</var> <var>dy</var> &mdash; move your stone at (<var>px</var>,<var>py</var>)
@@ -200,7 +200,7 @@
 				Response time for your first turn of the match &le; <const>1000</const> ms (only once, not every
 				round)<br>
 				Response time for one turn &le; <const>100</const> ms<br>
-				<var>moveCount</var> &le; <const>1025</const>
+				<var>actionCount</var> &le; <const>1025</const>
 			</div>
 		</div>
 	</div>
@@ -211,10 +211,10 @@
 		</h1>
 		<p>Each league has a boss to beat:</p>
 		<ul>
-			<li><strong>Wood 4</strong>: a greedy bot. It takes a winning move if it sees one, otherwise the
-				move that removes the most material, and never looks at your reply.</li>
+			<li><strong>Wood 4</strong>: a greedy bot. It takes a winning action if it sees one, otherwise the
+				action that removes the most material, and never looks at your reply.</li>
 			<li><strong>Wood 3</strong>: Monte Carlo tree search with short random playouts. It also recognizes positions it has fully solved.</li>
-			<li><strong>Wood 2</strong>: a plain three-move-deep minimax with alpha-beta pruning, counting
+			<li><strong>Wood 2</strong>: a plain three-turn-deep minimax with alpha-beta pruning, counting
 				stones.</li>
 		</ul>
 		<p>The bosses never swap. <strong>Wood 1</strong> is the top league.</p>

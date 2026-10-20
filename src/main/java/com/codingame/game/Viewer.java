@@ -208,7 +208,7 @@ public class Viewer {
         updateCounts(board);
         lastBoard = board;
         msgText[player.getIndex()].setText(message);
-        statusText.setText("Move " + plies + ": " + player.getNicknameToken() + " " + m.wire() + (r.removed ? "  (stone pushed off)" : ""));
+        statusText.setText("Turn " + plies + ": " + player.getNicknameToken() + " " + m.wire() + (r.removed ? "  (stone pushed off)" : ""));
         commitTexts();
     }
 

@@ -6,8 +6,8 @@ import java.util.Scanner;
 
 /**
  * Test bot. args: "swap" = answer SWAP whenever it is offered; "late" = answer SWAP on its second
- * turn of each round (must be rejected); otherwise play the first legal move. Logs each turn's
- * "round myColor | lastMove | moveCount" to stderr.
+ * turn of each round (must be rejected); otherwise play the first legal action. Logs each turn's
+ * "round myColor | lastAction | actionCount" to stderr.
  */
 public class SwapBot {
     public static void main(String[] args) {

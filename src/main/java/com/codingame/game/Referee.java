@@ -18,7 +18,7 @@ import java.util.List;
  * and white in round 1. Pie rule in every round: on white's first turn, white may answer SWAP
  * instead of a move, and the players exchange colors for the rest of the round (the swapper now
  * owns black's stones, including black's first move; the other player continues as white and moves
- * next). A round won is worth 2 points, a drawn round 1 point (a round reaching MAX_PLIES moves is a
+ * next). A round won is worth 2 points, a drawn round 1 point (a round reaching MAX_PLIES turns is a
  * draw; a SWAP is not a move); the match score is the sum, so equal totals are a draw. A player with
  * no legal move loses the round. A timeout or an invalid move loses the match.
  */
@@ -94,7 +94,7 @@ public class Referee extends AbstractReferee {
         Player player = playerOf(color);
         List<Move> moves = board.legalMoves();
         if (moves.isEmpty()) {
-            gameManager.addToGameSummary(player.getNicknameToken() + " has no legal move.");
+            gameManager.addToGameSummary(player.getNicknameToken() + " has no legal action.");
             endRound(1 - color);
             return;
         }
@@ -136,7 +136,7 @@ public class Referee extends AbstractReferee {
     }
 
     private void sendInputs(Player player, int color, List<Move> moves, boolean pie) {
-        player.sendInputLine(round + " " + color);
+        player.sendInputLine((round + 1) + " " + color);   // rounds are numbered 1 and 2, as in the viewer
         for (int y = 0; y < 8; y++) player.sendInputLine(board.row(y));
         player.sendInputLine(lastOpponentMove[color]);
         player.sendInputLine(Integer.toString(moves.size() + (pie ? 1 : 0)));
@@ -163,7 +163,7 @@ public class Referee extends AbstractReferee {
             }
         }
         Move m = new Move(v[0], v[1], v[2], v[3], v[4], v[5]);
-        if (!legal.contains(m)) throw new InvalidAction("illegal move " + m.wire());
+        if (!legal.contains(m)) throw new InvalidAction("not a listed legal action: " + m.wire());
         return m;
     }
 
@@ -179,7 +179,7 @@ public class Referee extends AbstractReferee {
         if (winnerColor < 0) {
             points[0] += DRAW_POINTS;
             points[1] += DRAW_POINTS;
-            result = "draw (move limit)";
+            result = "draw (turn limit)";
         } else {
             Player w = playerOf(winnerColor);
             points[w.getIndex()] += WIN_POINTS;
@@ -191,7 +191,7 @@ public class Referee extends AbstractReferee {
         if (winnerColor < 0)
             for (Player p : gameManager.getPlayers()) gameManager.addTooltip(p, "Round " + (round + 1) + ": draw");
         else gameManager.addTooltip(playerOf(winnerColor), "Round " + (round + 1) + ": " + result);
-        lastRoundLine = result + " in " + plies + " moves";
+        lastRoundLine = result + " in " + plies + " turns";
         gameManager.addToGameSummary(GameManager.formatSuccessMessage("Round " + (round + 1) + ": " + lastRoundLine));
         viewer.endRound(round, result, points, board, winnerColor);
         if (round == 1) {
