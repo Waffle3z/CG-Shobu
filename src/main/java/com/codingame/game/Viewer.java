@@ -31,6 +31,7 @@ public class Viewer {
     private final Text roundText, statusText;
     private final Rectangle summaryPanel;              // the between-rounds summary, hidden during play
     private final Text summaryTitle, summaryResult, summaryScore, summaryNext;
+    private static final int MSG_CHARS = 22, MSG_WIDTH = 360;
     private final Text[] colorText = new Text[2], pointsText = new Text[2], msgText = new Text[2];
     private final Text[][] countText = new Text[2][4];
     private int round;
@@ -103,8 +104,19 @@ public class Viewer {
                 countText[i][b] = g.createText("4").setX(tx).setY(ty).setAnchor(0.5).setFontFamily("Verdana").setFontSize(40)
                         .setFillColor(0xffffff).setStrokeColor(0x000000).setStrokeThickness(4).setZIndex(2);
             }
-            msgText[i] = g.createText("").setX(x0 + 10).setY(930).setFontFamily("Verdana").setFontSize(22).setFillColor(0xbbbbbb);
+            msgText[i] = g.createText("").setX(x0 + 10).setY(905).setFontFamily("Verdana").setFontSize(22).setFillColor(0xbbbbbb)
+                    .setMaxWidth(MSG_WIDTH);
         }
+    }
+
+    /** A bot's message (at most 40 characters, Referee) on up to two lines of MSG_CHARS, broken at a space when
+     *  there is one; setMaxWidth still clips anything that renders wider (5DN1L: ~25 characters overflowed). */
+    static String wrapMessage(String msg) {
+        if (msg.length() <= MSG_CHARS) return msg;
+        int cut = msg.lastIndexOf(' ', MSG_CHARS);
+        if (cut <= 0) cut = MSG_CHARS;
+        String rest = msg.substring(cut).trim();
+        return msg.substring(0, cut) + "\n" + (rest.length() > MSG_CHARS ? rest.substring(0, MSG_CHARS) : rest);
     }
 
     static String boardText(int b) {
@@ -168,7 +180,7 @@ public class Viewer {
         colorText[newWhite.getIndex()].setText("white");
         for (Rectangle m : marks) m.setAlpha(0, Curve.IMMEDIATE);
         updateCounts(lastBoard);
-        msgText[swapper.getIndex()].setText(message);
+        msgText[swapper.getIndex()].setText(wrapMessage(message));
         statusText.setText(swapper.getNicknameToken() + " swaps colors (pie rule) and now plays black");
         commitTexts();
     }
@@ -207,7 +219,7 @@ public class Viewer {
         move(m.ax, m.ay, m.ax + m.dx, m.ay + m.dy, color);
         updateCounts(board);
         lastBoard = board;
-        msgText[player.getIndex()].setText(message);
+        msgText[player.getIndex()].setText(wrapMessage(message));
         statusText.setText("Turn " + plies + ": " + player.getNicknameToken() + " " + m.wire() + (r.removed ? "  (stone pushed off)" : ""));
         commitTexts();
     }
