@@ -1,8 +1,8 @@
 # Shobu — CodinGame multiplayer game
 
-Referee, viewer, statement and league bosses for **Shobu** (Manopoly Lepeska & Jamie Sajdak, Smirk &
-Laughter, 2019) on the CodinGame SDK 4.7.8. This adaptation adds a two-round match, a pie rule and a
-110-move limit.
+Referee, viewer, statement and league bosses for **Shobu** (designed by Manolis Vranas & Jamie Sajdak of
+Seesaw Games, published by Smirk & Laughter, 2019) on the CodinGame SDK 4.7.8. This adaptation adds a
+two-round match, a pie rule and a 110-turn limit.
 
 ## Rules as implemented (`src/main/java/com/codingame/game/shobu/Board.java`)
 
