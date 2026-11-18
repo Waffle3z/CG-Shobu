@@ -62,8 +62,8 @@
 						square;</li>
 					<li>the pushed stone ends up one square past where your stone lands; if that square is
 						off the board, the stone is <strong>removed</strong> from the game;</li>
-					<li>you may not push your own stone, push two stones, or push a stone onto another
-						stone.</li>
+					<li>your stone may not pass over or land on one of your own stones, push two stones, or
+						push a stone onto another stone.</li>
 				</ul>
 			</li>
 		</ol>
@@ -85,6 +85,9 @@
 		<ul>
 			<li>The player who swapped now plays <strong>black</strong>, with black's first action already on the
 				board.</li>
+			<li>The stones do not change: they stay where they are and keep their letters in the input. The
+				player who swapped now moves the <const>b</const> stones and receives <var>myColor</var> =
+				<const>0</const>.</li>
 			<li>The other player now plays <strong>white</strong> and plays next.</li>
 			<li>So black's best first action is a balanced one: a first action that is too strong just gets
 				taken by the opponent.</li>
@@ -154,6 +157,26 @@
 			<li><strong>Illegal push.</strong> A black stone on (4,3) cannot move <const>0 -1</const> if
 				white stones stand on both (4,2) and (4,1): that would push two stones in a row.</li>
 		</ul>
+		<p>The input white receives in round <const>1</const> after black's first action above, <action>3 7 4 3 0 -2</action>
+			(<const>210</const> legal actions, then <const>SWAP</const> because it is white's first turn):</p>
+		<div style="font-family:monospace;background:rgba(127,127,127,0.12);padding:8px 12px;margin:8px 0;line-height:1.4">
+			1 1<br>
+			wwwwwwww<br>
+			....b...<br>
+			........<br>
+			bbbb.bbb<br>
+			wwwwwwww<br>
+			...b....<br>
+			........<br>
+			bbb.bbbb<br>
+			3 7 4 3 0 -2<br>
+			211<br>
+			0 0 4 0 1 1<br>
+			0 0 5 0 1 1<br>
+			0 0 6 0 1 1<br>
+			(... 207 more legal actions ...)<br>
+			SWAP
+		</div>
 	</div>
 
 	<div class="statement-section statement-protocol">
